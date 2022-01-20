@@ -36,4 +36,11 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/getServerTime", method = RequestMethod.POST)
+	public String getTime() {
+		Date date = new Date();
+		
+		return String.valueOf(date);
+	}
+	
 }

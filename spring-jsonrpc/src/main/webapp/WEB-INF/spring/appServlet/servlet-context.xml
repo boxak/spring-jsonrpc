@@ -21,8 +21,15 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<beans:bean id="CORSCheckInterceptor" class="com.study.springjsonrpc.interceptor.CORSCheckInterceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/RPC" />
+			<beans:ref bean="CORSCheckInterceptor" />
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.study.springjsonrpc" />
-	
-	
 	
 </beans:beans>

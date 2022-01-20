@@ -47,7 +47,7 @@ public class JsonRPCServiceImpl implements JsonRPCService {
     @Override
     public String getServerTime() {
     	Date date = new Date();
-    	
+    	System.out.println(date);
     	return String.valueOf(date);
     }
 }

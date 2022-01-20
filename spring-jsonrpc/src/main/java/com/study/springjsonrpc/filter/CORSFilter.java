@@ -12,38 +12,49 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CORSFilter implements Filter {
-	public void doFilter(ServletRequest request,
-						 ServletResponse response,
+	public void doFilter(ServletRequest servletRequest,
+						 ServletResponse servletResponse,
 						 FilterChain chain) throws IOException, ServletException {
 		
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
+//		HttpServletRequest req = (HttpServletRequest) request;
+//		HttpServletResponse resp = (HttpServletResponse) response;
+//		
+//		resp.setHeader("Access-Control-Allow-Origin", "*");
+//		resp.setHeader("Access-Control-Allow-Credentials", "true");
+//		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+//		resp.setHeader("Access-Control-Max-Age", "10");
+//		resp.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//		
+//		if ("OPTIONS".equals(req.getMethod())) {
+//			resp.setStatus(HttpServletResponse.SC_OK);
+//			return;
+//		}
+//		
+//		chain.doFilter(req, response);
 		
-		String remoteAddr = req.getRemoteAddr();
-		String uri = req.getRequestURI();
-		String url = req.getRequestURL().toString();
-		String queryString = req.getQueryString();
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		
-		String referer = req.getHeader("referer");
-		String agent = req.getHeader("User-Agent");
+		System.out.println("CORSFilter in");
 		
-		StringBuffer sb = new StringBuffer();
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "*");
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+        HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        if (request.getMethod().equals("OPTIONS")) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+        chain.doFilter(request, servletResponse);
 		
-		sb.append("\n* remoteAddr : " + remoteAddr)
-		  .append("\n* uri : " + uri)
-		  .append("\n* url : " + url)
-		  .append("\n* queryString : " + queryString)
-		  .append("\n* referer : " + referer)
-		  .append("\n* agent : " + agent)
-		  .append("\n*");
-		
-		resp.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
-		resp.setHeader("Access-Control-Allow-Credentials", "true");
-		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-		resp.setHeader("Access-Control-Max-Age", "10");
-		resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-		
-		chain.doFilter(req, response);
+//		HttpServletResponse response = (HttpServletResponse) servletResponse;
+//		
+//		response.setHeader("Access-Control-Allow-Origin", "*");
+//		response.setHeader("Access-Control-Allow-Methods", "GET, POST");
+//		response.setHeader("Access-Control-Max-Age", "3600");
+//		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+//		response.setHeader("Access-Control-Allow-Credentials", "true");
+//		
+//		chain.doFilter(servletRequest, response);
 	}
 	
 	public void init(FilterConfig filterConfig) {}
